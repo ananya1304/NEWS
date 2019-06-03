@@ -1,11 +1,14 @@
 package com.example.ananya.news;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,10 +45,14 @@ public class NewsListActivity extends AppCompatActivity {
         if (findViewById(R.id.news_detail_container) != null) {
             mTwoPane = true;
         }
+        final Button button = (Button) findViewById(R.id.button2);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(NewsListActivity.this, SaveActivity.class);
+                startActivity(i);
+            }
+        });
 
-                //View recyclerView = findViewById(R.id.news_list);
-        //assert recyclerView != null;
-        //setupRecyclerView((RecyclerView) recyclerView);
         if(Connectivity.isNetworkAvailable(getApplicationContext()))
         {
             DownloadNews newsTask=new DownloadNews();
@@ -106,7 +113,8 @@ public class NewsListActivity extends AppCompatActivity {
             }
         }
     }
-   private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, dataList, mTwoPane));
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        SimpleItemRecyclerViewAdapter mAdapter = new SimpleItemRecyclerViewAdapter(this, dataList, mTwoPane);
+        recyclerView.setAdapter(mAdapter);
     }
 }

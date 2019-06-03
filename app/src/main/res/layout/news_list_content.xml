@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/regularLayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
@@ -9,55 +9,44 @@
     android:layout_weight="7"
     android:padding="8dp">
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="4dp">
-
-        <ImageView
-            android:id="@+id/galleryImage"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            />
-    </LinearLayout>
-
-
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_weight="7"
-        >
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/textViewOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:text="&#8942;"
+            android:textAppearance="?android:textAppearanceLarge" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:shadowColor="#000"
-            android:shadowRadius="1.0"
-            android:textColor="#666666"
-            android:textSize="17sp"
             android:layout_marginBottom="5dp"
+            android:ellipsize="end"
             android:maxLines="2"
             android:scrollHorizontally="true"
-            android:ellipsize="end"
-            android:text="News Title"/>
+            android:shadowColor="#000"
+            android:shadowRadius="1.0"
+            android:text="News Title"
+            android:textColor="#666666"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/sdetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#777777"
-            android:textSize="16sp"
+            android:ellipsize="end"
             android:maxLines="2"
             android:minLines="2"
             android:scrollHorizontally="true"
-            android:ellipsize="end"
-            android:text="News Description"/>
-
+            android:text="News Description"
+            android:textColor="#777777"
+            android:textSize="16sp" />
 
 
         <LinearLayout
@@ -65,7 +54,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1">
-
 
 
             <LinearLayout
@@ -76,25 +64,23 @@
 
                 <TextView
                     android:id="@+id/author"
-                    android:textSize="15sp"
-                    android:textColor="#42A5F5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="News Author"/>
+                    android:text="News Author"
+                    android:textColor="#42A5F5"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
-
             <TextView
                 android:id="@+id/time"
-                android:gravity="right"
-                android:textSize="14sp"
-                android:textColor="#42A5F5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"/>
+                android:gravity="right"
+                android:text="Time"
+                android:textColor="#42A5F5"
+                android:textSize="14sp" />
         </LinearLayout>
-
 
 
     </LinearLayout>

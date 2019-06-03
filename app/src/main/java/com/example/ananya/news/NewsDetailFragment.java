@@ -14,18 +14,12 @@ import android.webkit.WebView;
 
 
 public class NewsDetailFragment extends Fragment {
-    //public static final String ARG_ITEM_ID = "item_id";
-    //private NewsListActivity mItem;
     public NewsDetailFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*if (getArguments().containsKey(ARG_ITEM_ID)) {
-            mItem = NewsListActivity.dataList.get(getArguments().getString(ARG_ITEM_ID));*/
-
             Activity activity = this.getActivity();
         }
 

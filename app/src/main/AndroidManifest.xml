@@ -31,6 +31,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.ananya.news.NewsListActivity" />
         </activity>
+        <activity
+            android:name=".SaveActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <provider
+            android:name=".NewsProvider"
+            android:authorities="com.example.ananya.news"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

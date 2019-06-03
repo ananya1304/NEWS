@@ -19,9 +19,16 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="Saved" />
 
 
     </android.support.design.widget.AppBarLayout>
+
 
     <FrameLayout
         android:id="@+id/frameLayout"
