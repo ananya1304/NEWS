@@ -9,31 +9,34 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.example.ananya.news.NewsListActivity.KEY_URL;
+import static com.example.ananya.news.NewsListFragment.KEY_AUTHOR;
+import static com.example.ananya.news.NewsListFragment.KEY_DESCRIPTION;
+import static com.example.ananya.news.NewsListFragment.KEY_PUBLISHEDAT;
+import static com.example.ananya.news.NewsListFragment.KEY_TITLE;
+import static com.example.ananya.news.NewsListFragment.KEY_URL;
+import static com.example.ananya.news.NewsListFragment.KEY_URLTOIMAGE;
+
 
 public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-    private final NewsListActivity mParentActivity;
+    private final Activity mParentActivity;
     private final ArrayList<HashMap<String, String>> mValues;
     private final boolean mTwoPane;
 
-    SimpleItemRecyclerViewAdapter(NewsListActivity parent, ArrayList<HashMap<String, String>> items, boolean twoPane) {
+    SimpleItemRecyclerViewAdapter(Activity parent, ArrayList<HashMap<String, String>> items, boolean twoPane) {
         mValues = items;
         mParentActivity = parent;
         mTwoPane = twoPane;
@@ -51,13 +54,13 @@ public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleIt
                 int position = retViewHolder.getAdapterPosition();
                 if (mTwoPane) {
                     NewsDetailFragment fragment = new NewsDetailFragment();
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
+                    ((AppCompatActivity) mParentActivity).getSupportFragmentManager().beginTransaction()
                             .replace(R.id.news_detail_container, fragment)
                             .commit();
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, NewsDetailActivity.class);
-                    intent.putExtra("url", NewsListActivity.dataList.get(+position).get(KEY_URL));
+                    intent.putExtra("url", NewsListFragment.dataList.get(+position).get(KEY_URL));
                     context.startActivity(intent);
                 }
             }
@@ -75,17 +78,17 @@ public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleIt
         holder.time.setId(position);
 
 
-        String author = song.get(NewsListActivity.KEY_AUTHOR);
+        String author = song.get(KEY_AUTHOR);
         holder.author.setText(author);
-        String title = song.get(NewsListActivity.KEY_TITLE);
+        String title = song.get(KEY_TITLE);
         holder.title.setText(title);
-        String publishedat = song.get(NewsListActivity.KEY_PUBLISHEDAT);
+        String publishedat = song.get(KEY_PUBLISHEDAT);
         holder.time.setText(publishedat);
-        String description = song.get(NewsListActivity.KEY_DESCRIPTION);
+        String description = song.get(KEY_DESCRIPTION);
         holder.sdetails.setText(description);
         holder.itemView.setTag(mValues.get(position));
-        String url = song.get(NewsListActivity.KEY_URL);
-        String urltoimage = song.get(NewsListActivity.KEY_URLTOIMAGE);
+        String url = song.get(KEY_URL);
+        String urltoimage = song.get(KEY_URLTOIMAGE);
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

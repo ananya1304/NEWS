@@ -1,7 +1,9 @@
 package com.example.ananya.news;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +13,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.example.ananya.news.NewsListActivity.KEY_URL;
+import static com.example.ananya.news.NewsListFragment.KEY_AUTHOR;
+import static com.example.ananya.news.NewsListFragment.KEY_DESCRIPTION;
+import static com.example.ananya.news.NewsListFragment.KEY_PUBLISHEDAT;
+import static com.example.ananya.news.NewsListFragment.KEY_TITLE;
+import static com.example.ananya.news.NewsListFragment.KEY_URL;
+import static com.example.ananya.news.NewsListFragment.KEY_URLTOIMAGE;
 
 public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
-    private final SaveActivity mParentActivity;
+    private final Activity mParentActivity;
     private final ArrayList<HashMap<String, String>> mValues;
     private final boolean mTwoPane;
 
-    SaveAdapter(SaveActivity parent, ArrayList<HashMap<String, String>> items, boolean twoPane)
+    SaveAdapter(Activity parent, ArrayList<HashMap<String, String>> items, boolean twoPane)
     {
         mValues = items;
         mParentActivity = parent;
@@ -37,13 +44,13 @@ public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
                 int position = retViewHolder.getAdapterPosition();
                 if (mTwoPane) {
                     NewsDetailFragment fragment = new NewsDetailFragment();
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
+                    ((AppCompatActivity) mParentActivity).getSupportFragmentManager().beginTransaction()
                             .replace(R.id.news_detail_container, fragment)
                             .commit();
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, NewsDetailActivity.class);
-                    intent.putExtra("url", SaveActivity.dataList.get(+position).get(KEY_URL));
+                    intent.putExtra("url", SaveListFragment.dataList.get(+position).get(KEY_URL));
                     context.startActivity(intent);
                 }
             }
@@ -61,17 +68,17 @@ public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
         holder.time.setId(position);
 
 
-        String author = song.get(NewsListActivity.KEY_AUTHOR);
+        String author = song.get(KEY_AUTHOR);
         holder.author.setText(author);
-        String title = song.get(NewsListActivity.KEY_TITLE);
+        String title = song.get(KEY_TITLE);
         holder.title.setText(title);
-        String publishedat = song.get(NewsListActivity.KEY_PUBLISHEDAT);
+        String publishedat = song.get(KEY_PUBLISHEDAT);
         holder.time.setText(publishedat);
-        String description = song.get(NewsListActivity.KEY_DESCRIPTION);
+        String description = song.get(KEY_DESCRIPTION);
         holder.sdetails.setText(description);
         holder.itemView.setTag(mValues.get(position));
-        String url = song.get(NewsListActivity.KEY_URL);
-        String urltoimage = song.get(NewsListActivity.KEY_URLTOIMAGE);
+        String url = song.get(KEY_URL);
+        String urltoimage = song.get(KEY_URLTOIMAGE);
     }
     @Override
     public int getItemCount() {
