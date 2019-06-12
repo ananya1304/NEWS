@@ -3,6 +3,7 @@ package com.example.ananya.news;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.os.AsyncTask;
 
-public class NewsListFragment extends Fragment {
+public class NewsListFragment extends Fragment implements FragmentInterface{
+    private SwipeRefreshLayout swipeContainer;
+
     Activity activity;
 
     String API_KEY="26efc987c8db4fe9a2510e75ef4e44ef";
@@ -48,6 +49,21 @@ public class NewsListFragment extends Fragment {
             mTwoPane = true;
         }
 
+        refresh();
+        swipeContainer = rootView.findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                swipeContainer.setRefreshing(false);
+
+            }
+        });
+        return rootView;
+    }
+
+    private void refresh()
+    {
         if(Connectivity.isNetworkAvailable(activity.getApplicationContext()))
         {
             DownloadNews newsTask=new DownloadNews();
@@ -57,40 +73,33 @@ public class NewsListFragment extends Fragment {
         {
             Toast.makeText(activity.getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
         }
-
-        return rootView;
     }
-
-    class DownloadNews extends AsyncTask<String, Void, String>{
+    class DownloadNews extends AsyncTask<String, Void, String> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
         }
-        protected String doInBackground(String... args)
-        {
-            String xml="";
-            String urlParameters="";
-            xml=Connectivity.excuteGet("https://newsapi.org/v1/articles?source="+NEWS_SOURCE+"&sortBy=top&apiKey="+API_KEY, urlParameters);
-            if(xml!=null)
+
+        protected String doInBackground(String... args) {
+            String xml = "";
+            String urlParameters = "";
+            xml = Connectivity.excuteGet("https://newsapi.org/v1/articles?source=" + NEWS_SOURCE + "&sortBy=top&apiKey=" + API_KEY, urlParameters);
+            if (xml != null)
                 return xml;
             else
                 return " ";
         }
 
         @Override
-        protected void onPostExecute(String xml)
-        {
+        protected void onPostExecute(String xml) {
             super.onPostExecute(xml);
-            if(xml.length()>10)
-            {
-                try{
-                    JSONObject jsonResponse= new JSONObject(xml);
-                    JSONArray jsonArray=jsonResponse.optJSONArray("articles");
-                    for(int i=0;i<jsonArray.length();i++)
-                    {
+            if (xml.length() > 10) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(xml);
+                    JSONArray jsonArray = jsonResponse.optJSONArray("articles");
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        HashMap<String, String> map= new HashMap<String, String>();
+                        HashMap<String, String> map = new HashMap<String, String>();
                         map.put(KEY_AUTHOR, jsonObject.optString(KEY_AUTHOR).toString());
                         map.put(KEY_TITLE, jsonObject.optString(KEY_TITLE).toString());
                         map.put(KEY_DESCRIPTION, jsonObject.optString(KEY_DESCRIPTION).toString());
@@ -99,16 +108,22 @@ public class NewsListFragment extends Fragment {
                         map.put(KEY_PUBLISHEDAT, jsonObject.optString(KEY_PUBLISHEDAT).toString());
                         dataList.add(map);
                     }
-                }
-                catch(JSONException e)
-                {
+                } catch (JSONException e) {
                     Toast.makeText(activity.getApplicationContext(), "Unexpected error", Toast.LENGTH_SHORT).show();
                 }
                 View recyclerView = rootView.findViewById(R.id.news_list);
                 assert recyclerView != null;
                 setupRecyclerView((RecyclerView) recyclerView);
+
+
             }
         }
+    }
+
+    @Override
+    public void fragmentBecameVisible()
+    {
+
     }
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         SimpleItemRecyclerViewAdapter mAdapter = new SimpleItemRecyclerViewAdapter(activity, dataList, mTwoPane);

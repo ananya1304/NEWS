@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,9 @@ import static com.example.ananya.news.NewsListFragment.KEY_TITLE;
 import static com.example.ananya.news.NewsListFragment.KEY_URL;
 import static com.example.ananya.news.NewsListFragment.KEY_URLTOIMAGE;
 
-public class SaveListFragment extends Fragment {
+public class SaveListFragment extends Fragment implements FragmentInterface{
+    private SwipeRefreshLayout swipeContainer;
     private Activity activity;
-    String NEWS_SOURCE = "BBC-NEWS";
     private SaveAdapter mAdapter;
     private boolean mTwoPane;
     public static ArrayList<HashMap<String, String>> dataList = new ArrayList<HashMap<String, String>>();
@@ -42,8 +43,19 @@ public class SaveListFragment extends Fragment {
         }
         accessData();
         View recyclerView = rootView.findViewById(R.id.news_list);
+        swipeContainer = rootView.findViewById(R.id.swipeContainer);
+
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onResume();
+                swipeContainer.setRefreshing(false);
+
+
+            }
+        });
 
         return rootView;
     }
@@ -69,15 +81,13 @@ public class SaveListFragment extends Fragment {
         }
     }
 
-
     @Override
-    public void onStart()
+    public void onPause()
     {
-        super.onStart();
+        super.onPause();
         mAdapter.clear();
-        accessData();
-    }
 
+    }
     @Override
     public void onResume()
     {
@@ -87,14 +97,10 @@ public class SaveListFragment extends Fragment {
     }
 
     @Override
-    public void onPause()
+    public void fragmentBecameVisible()
     {
-        super.onPause();
-        mAdapter.clear();
-        accessData();
+        onResume();
     }
-
-
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         mAdapter = new SaveAdapter(activity, dataList, mTwoPane);
         recyclerView.setAdapter(mAdapter);

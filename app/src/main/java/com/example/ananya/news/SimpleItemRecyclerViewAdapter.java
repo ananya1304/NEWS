@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,6 +33,7 @@ import static com.example.ananya.news.NewsListFragment.KEY_URLTOIMAGE;
 
 
 public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+
     private final Activity mParentActivity;
     private final ArrayList<HashMap<String, String>> mValues;
     private final boolean mTwoPane;
@@ -131,6 +133,11 @@ public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleIt
         return mValues.size();
     }
 
+    public void clear() {
+        int size = mValues.size();
+        mValues.clear();
+        notifyItemRangeRemoved(0, size);
+    }
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
