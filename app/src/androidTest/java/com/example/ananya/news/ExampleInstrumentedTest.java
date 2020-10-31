@@ -21,6 +21,7 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
+        assertNotNull(appContext);
         assertEquals("com.example.ananya.news", appContext.getPackageName());
     }
 }
